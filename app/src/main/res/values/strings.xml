@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LogCollector</string>
+    <string name="log_action">com.billy.log.collection.start</string>
+    <string name="log_starting">开启中…</string>
+    <string name="log_status_off">已关闭</string>
+    <string name="log_status_on">已开启</string>
+    <string name="log_status_waiting">等待客户端连接…</string>
+    <string name="log_status_stopping">正在关闭…</string>
+    <string name="log_status_starting">正在开启</string>
+    <string name="share">分享</string>
+    <string name="copy_to_clipboard_success">已复制到剪贴板</string>
+</resources>
