@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="log_background">#2B2B2B</color>
+    <color name="log_text">#BBBBBB</color>
+    <color name="log_level_v">#CCCCCC</color>
+    <color name="log_level_d">#FFFFFF</color>
+    <color name="log_level_i">#00BB14</color>
+    <color name="log_level_w">#FFFF00</color>
+    <color name="log_level_e">#CA5A59</color>
+    <color name="divide_gray_color">#000000</color>
 </resources>

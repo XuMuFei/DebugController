@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="theme_margin">16dp</dimen>
+    <dimen name="theme_margin">6dp</dimen>
+    <dimen name="log_item_height">30dp</dimen>
+    <dimen name="log_filter_hint_size">12sp</dimen>
 </resources>

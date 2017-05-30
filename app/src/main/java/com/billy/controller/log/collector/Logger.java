@@ -1,4 +1,4 @@
-package com.billy.controller.logcollector;
+package com.billy.controller.log.collector;
 
 import android.util.Log;
 

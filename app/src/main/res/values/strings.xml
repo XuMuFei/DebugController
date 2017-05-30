@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LogCollector</string>
+    <string name="app_name">Debug工具</string>
     <string name="log_action">com.billy.log.collection.start</string>
     <string name="log_starting">开启中…</string>
     <string name="log_status_off">已关闭</string>
@@ -9,4 +9,9 @@
     <string name="log_status_starting">正在开启</string>
     <string name="share">分享</string>
     <string name="copy_to_clipboard_success">已复制到剪贴板</string>
+    <string name="log_title">日志监控</string>
+    <string name="log_share_notice">日志记录（右上角按钮可分享&amp;复制）</string>
+    <string name="log_filter_hint">过滤…</string>
+    <string name="log_select_all">全选</string>
+    <string name="debug_json_view">查看Json</string>
 </resources>
