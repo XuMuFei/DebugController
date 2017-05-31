@@ -5,17 +5,36 @@
     android:orientation="vertical"
     android:padding="@dimen/theme_margin">
 
-    <Button
-        android:id="@+id/log_on_off"
+    <TextView
+        android:id="@+id/btn_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableBottom="@drawable/btn_start"
+        android:text="@string/log_status_off"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:drawablePadding="@dimen/theme_margin"
+        />
+    <View android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/theme_margin"
+        android:background="@color/colorPrimary"
+        />
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        />
-    <Button
-        android:id="@+id/btn_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/log_title"
-        />
+        android:layout_marginTop="@dimen/theme_margin"
+        android:columnCount="3"
+        >
+        <TextView
+            android:id="@+id/btn_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/btn_log"
+            android:text="@string/log_title"
+            android:gravity="center_horizontal"
+            />
+    </GridLayout>
 
 </LinearLayout>

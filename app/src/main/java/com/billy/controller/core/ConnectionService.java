@@ -2,6 +2,7 @@ package com.billy.controller.core;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -30,6 +31,7 @@ import static com.billy.controller.core.Status.WAITING_CLIENT;
  */
 public class ConnectionService extends Service {
 
+    private static final long WAITING_CLIENT_REPEAT_TIME = 1000;//1s 重复发送广播间隔
     private static AtomicBoolean running = new AtomicBoolean();
     ExecutorService mExecutorService;  //create a thread pool
     public static final String IP = "127.0.0.1";
@@ -41,6 +43,7 @@ public class ConnectionService extends Service {
     Socket client = null;
     BufferedReader in = null;
     private Status status;
+    Handler handler;
 
     @Nullable
     @Override
@@ -52,12 +55,13 @@ public class ConnectionService extends Service {
     public void onCreate() {
         super.onCreate();
         mExecutorService = Executors.newSingleThreadExecutor();
+        setStatus(STOPPED);
         setRunning(false);
+        handler = new Handler();
     }
 
     @Override
     public void onDestroy() {
-        DebugListenerManager.clear();
         if (mExecutorService != null && !mExecutorService.isShutdown()) {
             mExecutorService.shutdownNow();
         }
@@ -67,6 +71,7 @@ public class ConnectionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        logcat("startCommand, startId=" + startId);
         if (intent != null) {
             boolean stop = intent.getBooleanExtra("stop", false);
             if (stop) {
@@ -74,27 +79,28 @@ public class ConnectionService extends Service {
             } else {
                 if (running.compareAndSet(false, true)) {
                     logcat("set running = true");
-                    setStatus(STOPPED);
-                    new StartConnectionThread(startId).start();
+                    new StartConnectionThread().start();
                 } else {
                     setStatus(status);
-                    stopSelf(startId);
                 }
-                sendConnectBroadcast();
+                handler.postDelayed(sendConnectBroadcast, 300);//持续探测主机
             }
         }
         return super.onStartCommand(intent, flags, startId);
     }
-
-    private void sendConnectBroadcast() {
-        try {
-            Intent intent = new Intent(getString(R.string.log_action));
-            intent.putExtra("ip", IP);
-            intent.putExtra("port", PORT);
-            sendBroadcast(intent);
-        } catch(Exception ignored) {
+    
+    Runnable sendConnectBroadcast = new Runnable() {
+        @Override
+        public void run() {
+            if (status == WAITING_CLIENT) {//未连接之前反复探测主机
+                Intent intent = new Intent(getString(R.string.log_action));
+                intent.putExtra("ip", IP);
+                intent.putExtra("port", PORT);
+                sendBroadcast(intent);
+                handler.postDelayed(sendConnectBroadcast, WAITING_CLIENT_REPEAT_TIME);
+            }
         }
-    }
+    };
 
     public static void addListener(IDebugListener listener) {
         DebugListenerManager.addListener(listener);
@@ -152,6 +158,8 @@ public class ConnectionService extends Service {
         in = null;
         client = null;
         ss = null;
+        setStatus(STOPPED);
+        setRunning(false);
     }
 
     private void close(Closeable closeable) {
@@ -175,17 +183,11 @@ public class ConnectionService extends Service {
             } finally {
                 close(socket);
             }
-        } else {
-            closeSocket();
         }
+        closeSocket();
     }
 
     private class StartConnectionThread extends Thread {
-        private int startId;
-
-        StartConnectionThread(int startId) {
-            this.startId = startId;
-        }
 
         @Override
         public void run() {
@@ -193,24 +195,23 @@ public class ConnectionService extends Service {
                 try {
                     setStatus(STARTING);
                     startConnection();
-                } catch(Exception ignored) {
+                } catch(Exception e) {
+                    e.printStackTrace();
                 } finally {
                     closeSocket();
-                    setStatus(STOPPED);
-                    setRunning(false);
                 }
             }
-            stopSelf(startId);
+            stopSelf();
         }
 
         private void startConnection() throws IOException {
             //创建一个ServerSocket ，监听客户端socket的连接请求
             ss = new ServerSocket(PORT, CLIENT_COUNT);
-            setStatus(WAITING_CLIENT);
-            client = ss.accept();
             in = null;
             startTime = 0;
             String msg;
+            setStatus(WAITING_CLIENT);
+            client = ss.accept();
             if (status == WAITING_CLIENT) {
                 setStatus(RUNNING);
                 in = new BufferedReader(new InputStreamReader(client.getInputStream()));

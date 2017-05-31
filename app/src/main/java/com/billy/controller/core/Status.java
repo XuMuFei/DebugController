@@ -7,16 +7,18 @@ import com.billy.controller.R;
  * @since 17/5/25 11:47
  */
 public enum Status {
-    STARTING(R.string.log_starting)
-    , WAITING_CLIENT(R.string.log_status_waiting)
-    , RUNNING(R.string.log_status_on)
-    , STOPPING(R.string.log_status_stopping)
-    , STOPPED(R.string.log_status_off);
+    STARTING(R.string.log_starting, R.drawable.btn_stop)
+    , WAITING_CLIENT(R.string.log_status_waiting, R.drawable.btn_stop)
+    , RUNNING(R.string.log_status_on, R.drawable.btn_stop)
+    , STOPPING(R.string.log_status_stopping, R.drawable.btn_stop)
+    , STOPPED(R.string.log_status_off, R.drawable.btn_start);
 
 
     public int resId;
-    Status(int resId) {
+    public int iconResId;
+    Status(int resId, int icon) {
         this.resId = resId;
+        this.iconResId = icon;
     }
 
 }

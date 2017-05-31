@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Debug工具</string>
+    <string name="app_name">Debug控制台</string>
     <string name="log_action">com.billy.log.collection.start</string>
     <string name="log_starting">开启中…</string>
-    <string name="log_status_off">已关闭</string>
-    <string name="log_status_on">已开启</string>
+    <string name="log_status_off">点击按钮开启debug</string>
+    <string name="log_status_on">已连接</string>
     <string name="log_status_waiting">等待客户端连接…</string>
-    <string name="log_status_stopping">正在关闭…</string>
-    <string name="log_status_starting">正在开启</string>
+    <string name="log_status_stopping">正在断开连接…</string>
+    <string name="log_status_starting">正在开启连接</string>
     <string name="share">分享</string>
     <string name="copy_to_clipboard_success">已复制到剪贴板</string>
     <string name="log_title">日志监控</string>

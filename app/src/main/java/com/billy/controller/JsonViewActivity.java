@@ -2,10 +2,10 @@ package com.billy.controller;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import com.billy.controller.core.JsonFormat;
  * @author billy.qi
  * @since 17/5/30 15:13
  */
-public class JsonViewActivity extends AppCompatActivity {
+public class JsonViewActivity extends BaseActivity {
 
     public static final String EXTRA_CONTENT = "content";
     private TextView textView;

@@ -2,18 +2,17 @@ package com.billy.controller.log.collector;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import com.billy.controller.BaseActivity;
 import com.billy.controller.R;
 import com.billy.controller.core.ConnectionService;
 import com.billy.controller.core.DebugListenerManager;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class LogActivity extends AppCompatActivity implements IDebugListener {
+public class LogActivity extends BaseActivity implements IDebugListener {
 //    private final Pool<>
 
     private LogAdapter adapter;
@@ -73,12 +72,6 @@ public class LogActivity extends AppCompatActivity implements IDebugListener {
                 String filter = s.toString().trim();
                 stringFilter.setFilterStr(filter);
                 adapter.refreshFilter();
-            }
-        });
-        findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.shareSelectedItems();
             }
         });
         CheckBox cbSelectAll = (CheckBox) findViewById(R.id.log_select_all);
@@ -153,5 +146,20 @@ public class LogActivity extends AppCompatActivity implements IDebugListener {
                 }
             }
         }
+    }
+
+    @Override
+    protected int getMenuResId() {
+        return R.menu.menu_log;
+    }
+
+    @Override
+    protected boolean onOptionsItemSelected(int itemId) {
+        switch (itemId) {
+            case R.id.action_share:
+                adapter.shareSelectedItems();
+                return true;
+        }
+        return super.onOptionsItemSelected(itemId);
     }
 }
