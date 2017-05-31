@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    package="com.billy.controller.lib">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <receiver android:name=".core.ControllerReceiver">
+            <intent-filter>
+                <action android:name="com.billy.controller.connection.start" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".core.ControllerService" />
+    </application>
+
+</manifest>

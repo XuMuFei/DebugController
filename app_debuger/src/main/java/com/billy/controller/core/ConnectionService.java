@@ -71,7 +71,6 @@ public class ConnectionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        logcat("startCommand, startId=" + startId);
         if (intent != null) {
             boolean stop = intent.getBooleanExtra("stop", false);
             if (stop) {

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Debug控制台</string>
-    <string name="log_action">com.billy.log.collection.start</string>
+    <string name="log_action">com.billy.controller.connection.start</string>
     <string name="log_starting">开启中…</string>
     <string name="log_status_off">点击按钮开启debug</string>
     <string name="log_status_on">已连接</string>
@@ -9,7 +9,7 @@
     <string name="log_status_starting">正在开启连接</string>
     <string name="share">分享</string>
     <string name="copy_to_clipboard_success">已复制到剪贴板</string>
-    <string name="log_title">日志监控</string>
+    <string name="log_title">Logcat</string>
     <string name="log_share_notice">日志记录（右上角按钮可分享&amp;复制）</string>
     <string name="log_filter_hint">过滤…</string>
     <string name="log_select_all">全选</string>
