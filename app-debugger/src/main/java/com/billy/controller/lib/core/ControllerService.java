@@ -2,7 +2,6 @@ package com.billy.controller.lib.core;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 
 import com.billy.controller.lib.DebugController;
@@ -23,8 +22,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ControllerService extends Service {
     private static final String STOP_FLAG = "stop_send_msg";
     static AtomicBoolean running = new AtomicBoolean();
-    Handler handler = new Handler();
-
 
     @Override
     public IBinder onBind(Intent intent) {

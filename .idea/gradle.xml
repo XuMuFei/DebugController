@@ -8,9 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app_debuger" />
+            <option value="$PROJECT_DIR$/app-debugger" />
+            <option value="$PROJECT_DIR$/app_debugger_controller" />
             <option value="$PROJECT_DIR$/app_test" />
-            <option value="$PROJECT_DIR$/lib_debuger" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

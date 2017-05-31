@@ -1,1 +1,1 @@
-include ':app_debuger', ':lib_debuger', ':app_test'
+include ':app_debugger_controller', ':app-debugger', ':app_test'
