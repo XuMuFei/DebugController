@@ -15,15 +15,17 @@
 
 ##目录介绍
     app_debugger_controller:   与主app安装在同一台设备上的app，用来连接主app进行debug
+    app_debugger_controller.apk:    app_debugger_controller编译出来的安装包，可直接安装运行
     app-debugger:   在主app中依赖的lib module
     app_test:       依赖app-debugger的demo
 
 ##使用方式
 
+- 安装&运行app_debugger_controller.apk
+
 - 在工程app module的build.gradle中添加app-debugger的依赖:
     
     `compile 'com.billy.android:app-debugger:1.1.8'`
-- 运行app_debugger_controller
 
 - 运行添加app-debugger的app
 
