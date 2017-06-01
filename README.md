@@ -14,12 +14,14 @@
 - 其它自定义的功能（比如：运行环境切换）
 
 ##目录介绍
-    app_debugger_controller:   与主app安装在同一台设备上的app，用来连接主app进行debug
-    app_debugger_controller.apk:    app_debugger_controller编译出来的安装包，可直接安装运行
-    app-debugger:   在主app中依赖的lib module
-    app_test:       依赖app-debugger的demo
+
+- app_debugger_controller:   与主app安装在同一台设备上的app，用来连接主app进行debug
+- app_debugger_controller.apk:    app_debugger_controller编译出来的安装包，可直接安装运行
+- app-debugger:   在主app中依赖的lib module
+- app_test:       依赖app-debugger的demo
 
 ##名词
+
 - 服务端：app_debugger_controller
 - 客户端：需要被debug的app（依赖app-debugger）
 
