@@ -5,6 +5,11 @@
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true" android:theme="@style/AppTheme">
+
+        <!-- 下面设置的都是默认值，可以删除其中一个或全部删除。此处是示例如何修改包名及签名 -->
+        <meta-data android:name="debugger_sign" android:value="d0de25a2855e83080290318caea6aa5f" />
+        <meta-data android:name="debugger_package_name" android:value="com.billy.controller" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

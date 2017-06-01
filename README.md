@@ -25,12 +25,23 @@
 
 - 在工程app module的build.gradle中添加app-debugger的依赖:
     
-    `compile 'com.billy.android:app-debugger:1.2.0'`
+    `compile 'com.billy.android:app-debugger:1.3.0'`
 
 - 运行添加app-debugger的app
 
 - debug连接建立成功后即可进行相关debug（例如：日志查看）
 
+##安全性校验
 
+使用app-debugger的应用默认只接收符合下列条件的app进行连接
 
+1. 包名为com.billy.controller
+2. 签名用getMetaData(Context context, String key) 获取的值为d0de25a2855e83080290318caea6aa5f
 
+        如果需要修改app_debugger_controller的签名，需要在AndroidManifest.xml的<application>中创建meta-data子节点，例如：
+            <meta-data android:name="debugger_sign" android:value="xxxxxxxxxxx" />
+            xxxxxxxxxxx值可以通过签名后主app连接时Log.e出来的日志获取，例如：
+            E/ControllerReceiver: app-debugger signMd5 error! app with package name 'com.billy.controller' signMd5=d0de25a2855e83080290318caea6aa5f
+        
+        
+        

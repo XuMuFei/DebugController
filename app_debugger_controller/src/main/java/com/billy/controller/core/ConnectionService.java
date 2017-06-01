@@ -92,13 +92,17 @@ public class ConnectionService extends Service {
     Runnable sendConnectBroadcast = new Runnable() {
         @Override
         public void run() {
-            if (status == WAITING_CLIENT) {//未连接之前反复探测主机
-                String action = getString(R.string.log_action, PreferenceUtil.getString(PreferenceUtil.KEY_PACKAGE_NAME, ""));
-                Intent intent = new Intent(action);
-                intent.putExtra("ip", IP);
-                intent.putExtra("port", PORT);
-                sendBroadcast(intent);
-                handler.postDelayed(sendConnectBroadcast, WAITING_CLIENT_REPEAT_TIME);
+            try{
+                if (status == WAITING_CLIENT) {//未连接之前反复探测主机
+                    String action = getString(R.string.log_action, PreferenceUtil.getString(PreferenceUtil.KEY_PACKAGE_NAME, ""));
+                    Intent intent = new Intent(action);
+                    intent.putExtra("ip", IP);
+                    intent.putExtra("port", PORT);
+                    sendBroadcast(intent);
+                    handler.postDelayed(sendConnectBroadcast, WAITING_CLIENT_REPEAT_TIME);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
             }
         }
     };
