@@ -1,8 +1,6 @@
 package com.billy.controller;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,9 +9,8 @@ import android.widget.AutoCompleteTextView;
 
 import com.billy.controller.util.PreferenceUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static com.billy.controller.util.PackageUtil.getAppName;
+import static com.billy.controller.util.PackageUtil.getPackageNameList;
 import static com.billy.controller.util.PreferenceUtil.KEY_PACKAGE_NAME;
 
 /**
@@ -38,26 +35,13 @@ public class WelcomeActivity extends BaseActivity {
         findViewById(R.id.btn_connection).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceUtil.putString(KEY_PACKAGE_NAME, editText.getText().toString().trim());
+                String pkg = editText.getText().toString().trim();
+                PreferenceUtil.putString(KEY_PACKAGE_NAME, pkg);
                 Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                intent.putExtra("appName", getAppName(pkg));
                 startActivity(intent);
             }
         });
     }
 
-    private String[] getPackageNameList() {
-        //获取手机中所有已安装的应用，并判断是否系统应用
-        ArrayList<String> appList = new ArrayList<>(); //用来存储获取的应用信息数据，手机上安装的应用数据都存在appList里
-        List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
-
-        for(int i = 0; i < packages.size(); i++) {
-            PackageInfo packageInfo = packages.get(i);
-            //判断是否系统应用
-            if((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                //非系统应用
-                appList.add(packageInfo.packageName);
-            }
-        }
-        return appList.toArray(new String[]{});
-    }
 }

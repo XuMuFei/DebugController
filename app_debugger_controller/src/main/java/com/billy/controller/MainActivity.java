@@ -7,13 +7,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.billy.controller.core.ConnectionStatus;
+import com.billy.controller.core.IServerMessageProcessor;
 import com.billy.controller.core.ServerConnectionService;
 import com.billy.controller.core.ServerMessageProcessorManager;
-import com.billy.controller.core.IServerMessageProcessor;
-import com.billy.controller.core.ConnectionStatus;
 import com.billy.controller.log.collector.LogActivity;
 
 import static com.billy.controller.core.ConnectionStatus.RUNNING;
@@ -33,6 +34,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String appName = getIntent().getStringExtra("appName");
+        if (!TextUtils.isEmpty(appName)) {
+            String title = getTitle().toString();
+            setTitle("(" + appName + ")" + title);
+        }
+
         mBtnOnOff = (TextView) findViewById(R.id.btn_connection);
         mBtnOnOff.setOnClickListener(this);
         setOnClickListeners(this, R.id.btn_log);
@@ -65,8 +72,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void processOnOff() {
+        processOnOff(false);
+    }
+
+    private void processOnOff(boolean forceStop) {
         Intent intent = new Intent(this, ServerConnectionService.class);
-        if (status == RUNNING || status == WAITING_CLIENT) {
+        if (forceStop || status == RUNNING || status == WAITING_CLIENT) {
             intent.putExtra("stop", true);
         }
         startService(intent);
@@ -105,6 +116,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onDestroy() {
         ServerMessageProcessorManager.removeListener(this);
+        processOnOff(true);
         super.onDestroy();
     }
 }
