@@ -48,16 +48,30 @@ public class LogMessageProcessor extends AbstractMessageProcessor {
                 }
                 return;
             }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(pro.getInputStream()));
-            String line;
-            while (isRunning()) {
-                try {
-                    while (isRunning() && (line = reader.readLine()) != null) {
-                        sendMessage(line);
-                        Thread.yield();
+            BufferedReader reader = null;
+            try{
+                reader = new BufferedReader(new InputStreamReader(pro.getInputStream()));
+                String line;
+                while (isRunning()) {
+                    try {
+                        while (isRunning() && (line = reader.readLine()) != null) {
+                            sendMessage(line);
+                            Thread.yield();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    pro.destroy();
                 }
             }
         }
