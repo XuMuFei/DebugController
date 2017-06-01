@@ -41,10 +41,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         processOnOff();//开启连接服务 或 初始化显示当前连接状态
     }
 
-    @Override
-    protected void initBackBtn() {
-    }
-
     private void setOnClickListeners(View.OnClickListener listener, @IdRes int... btnIds) {
         if (btnIds != null && btnIds.length > 0) {
             for (int id : btnIds) {

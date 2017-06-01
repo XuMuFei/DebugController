@@ -1,5 +1,6 @@
 package com.billy.controller;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * @author billy.qi
@@ -54,5 +58,18 @@ public class BaseActivity extends AppCompatActivity {
 
     protected int getMenuResId() {
         return 0;
+    }
+
+    //点击输入框外部，将焦点移除并收起软键盘
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View currentFocus = getWindow().getCurrentFocus();
+        if (currentFocus != null) {
+            InputMethodManager imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            //login_auto_account.setCursorVisible(false);
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+            currentFocus.clearFocus();
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

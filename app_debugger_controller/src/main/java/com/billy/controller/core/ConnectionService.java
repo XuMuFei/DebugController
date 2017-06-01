@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.billy.controller.R;
+import com.billy.controller.util.PreferenceUtil;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -92,7 +93,8 @@ public class ConnectionService extends Service {
         @Override
         public void run() {
             if (status == WAITING_CLIENT) {//未连接之前反复探测主机
-                Intent intent = new Intent(getString(R.string.log_action));
+                String action = getString(R.string.log_action, PreferenceUtil.getString(PreferenceUtil.KEY_PACKAGE_NAME, ""));
+                Intent intent = new Intent(action);
                 intent.putExtra("ip", IP);
                 intent.putExtra("port", PORT);
                 sendBroadcast(intent);

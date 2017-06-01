@@ -10,9 +10,27 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    //签名Persona
+    signingConfigs {
+        debug {
+            storeFile file("../demo.jks")
+            storePassword "123456"
+            keyAlias "debugger"
+            keyPassword "123456"
+        }
+    }
+
+    //构建类型
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

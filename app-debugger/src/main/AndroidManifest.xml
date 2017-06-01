@@ -7,7 +7,7 @@
     <application>
         <receiver android:name=".core.ControllerReceiver">
             <intent-filter>
-                <action android:name="com.billy.controller.connection.start" />
+                <action android:name="${applicationId}.controller.connection.start" />
             </intent-filter>
         </receiver>
         <service android:name=".core.ControllerService" />

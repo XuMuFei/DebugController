@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,8 +144,7 @@ class LogAdapter extends Adapter {
         Holder(View itemView) {
             super(itemView);
             this.textView = (TextView) itemView.findViewById(R.id.log_content);
-            this.textView.setMovementMethod(ScrollingMovementMethod.getInstance());
-            setMaxLine(2);
+            setMaxLine(DEF_MAX_LINE);
             this.textView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

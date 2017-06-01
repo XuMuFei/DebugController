@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Debug控制台</string>
-    <string name="log_action">com.billy.controller.connection.start</string>
+    <string name="log_action">%s.controller.connection.start</string>
     <string name="log_starting">开启中…</string>
     <string name="log_status_off">点击按钮开启debug</string>
     <string name="log_status_on">已连接</string>
@@ -14,4 +14,6 @@
     <string name="log_filter_hint">过滤…</string>
     <string name="log_select_all">全选</string>
     <string name="debug_json_view">查看Json</string>
+    <string name="debug_app_package_name_label">指定要连接的app包名</string>
+    <string name="debug_app_connect">前往连接</string>
 </resources>

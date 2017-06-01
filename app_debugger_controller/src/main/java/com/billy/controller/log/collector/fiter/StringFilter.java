@@ -9,19 +9,28 @@ import com.billy.controller.log.collector.LogActivity;
  * @since 17/5/30 10:47
  */
 public class StringFilter implements ILogFilter {
-    private String filterStr;
+    private String filterStrUpper;
 
     @Override
     public boolean filter(LogActivity.LogItem item) {
-        return item != null &&
-                (TextUtils.isEmpty(filterStr) || item.content.contains(filterStr));
+        if (TextUtils.isEmpty(filterStrUpper)) {
+            return true;
+        }
+        if (item == null || item.content == null) {
+            return false;
+        }
+        return item.content.toUpperCase().contains(filterStrUpper);
     }
 
     public String getFilterStr() {
-        return filterStr;
+        return filterStrUpper;
     }
 
     public void setFilterStr(String filterStr) {
-        this.filterStr = filterStr;
+        if (filterStr != null) {
+            this.filterStrUpper = filterStr.toUpperCase();
+        } else {
+            this.filterStrUpper = null;
+        }
     }
 }

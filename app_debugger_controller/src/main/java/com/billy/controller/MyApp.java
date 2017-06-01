@@ -23,8 +23,8 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         if (getPackageName().equals(getCurProcessName(this))) {//主进程
-//            EventBus.builder().addIndex(new MyEventBusIndex()).installDefaultEventBus();
         }
     }
 
