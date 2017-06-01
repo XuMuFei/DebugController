@@ -22,7 +22,7 @@
 
 - 在工程app module的build.gradle中添加app-debugger的依赖:
     
-    `compile 'com.billy.android:app-debugger:1.1.7'`
+    `compile 'com.billy.android:app-debugger:1.1.8'`
 - 运行app_debugger_controller
 
 - 运行添加app-debugger的app
