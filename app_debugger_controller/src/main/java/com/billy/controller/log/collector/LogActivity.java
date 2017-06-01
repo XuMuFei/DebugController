@@ -123,9 +123,6 @@ public class LogActivity extends BaseActivity implements IDebugListener {
                 }
                 readingCache.set(false);
                 adapter.addLogItems(list);
-//                int oldSize = data.size();
-//                data.addAll(list);
-//                adapter.notifyItemRangeInserted(oldSize, list.size());
             }
         }
     };
@@ -158,6 +155,10 @@ public class LogActivity extends BaseActivity implements IDebugListener {
         switch (itemId) {
             case R.id.action_share:
                 adapter.shareSelectedItems();
+                return true;
+            case R.id.action_clear:
+                cache.clear();
+                adapter.clear();
                 return true;
         }
         return super.onOptionsItemSelected(itemId);

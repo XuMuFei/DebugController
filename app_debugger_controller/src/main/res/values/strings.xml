@@ -16,4 +16,5 @@
     <string name="debug_json_view">查看Json</string>
     <string name="debug_app_package_name_label">指定要连接的app包名</string>
     <string name="debug_app_connect">前往连接</string>
+    <string name="log_clear">清除</string>
 </resources>

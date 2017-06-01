@@ -132,6 +132,12 @@ class LogAdapter extends Adapter {
         }
     }
 
+    void clear() {
+        allData.clear();
+        data.clear();
+        notifyDataSetChanged();
+    }
+
     private class Holder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final CheckBox checkBox;

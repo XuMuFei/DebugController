@@ -6,4 +6,8 @@
         android:icon="@drawable/icon_share"
         android:title="@string/share"
         yourapp:showAsAction="ifRoom"  />
+    <item android:id="@+id/action_clear"
+        android:icon="@drawable/icon_delete"
+        android:title="@string/log_clear"
+        yourapp:showAsAction="ifRoom"  />
 </menu>
