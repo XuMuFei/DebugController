@@ -1,10 +1,16 @@
 package com.billy.controller.lib;
 
+import android.text.TextUtils;
+
 import com.billy.controller.lib.core.AbstractMessageProcessor;
 import com.billy.controller.lib.processors.LogMessageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static com.billy.controller.lib.core.AbstractMessageProcessor.MESSAGE_SEPARATOR;
 
 /**
  * @author billy.qi
@@ -12,6 +18,7 @@ import java.util.List;
  */
 public class DebugController {
 
+    private static final ExecutorService EXECUTORSERVICE = Executors.newSingleThreadExecutor();
 
     private static final List<AbstractMessageProcessor> PROCESSORS = new ArrayList<>();
 
@@ -39,6 +46,39 @@ public class DebugController {
     public static void onConnectionStop() {
         for (AbstractMessageProcessor processor : PROCESSORS) {
             processor.onConnectionStop();
+        }
+    }
+
+    /**
+     * 处理从服务端发送过来的消息
+     * @param message 消息内容，格式为 key:value
+     */
+    public static void onMessage(String message) {
+        for (AbstractMessageProcessor processor : PROCESSORS) {
+            String key = processor.getKey();
+            if (key != null) {
+                String prefix = key + MESSAGE_SEPARATOR;
+                if (message.startsWith(prefix)) {
+                    message = message.substring(prefix.length());//去除prefix: ( key: )
+                    EXECUTORSERVICE.execute(new ProcessMessageTask(processor, message));
+                }
+            }
+        }
+    }
+
+    private static class ProcessMessageTask implements Runnable {
+        AbstractMessageProcessor processor;
+        String message;
+
+        ProcessMessageTask(AbstractMessageProcessor processor, String message) {
+            this.processor = processor;
+            this.message = message;
+        }
+        @Override
+        public void run() {
+            if (processor != null && !TextUtils.isEmpty(message)) {
+                processor.onMessage(message);
+            }
         }
     }
 

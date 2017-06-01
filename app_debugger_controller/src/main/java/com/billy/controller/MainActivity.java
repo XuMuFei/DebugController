@@ -10,24 +10,24 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
-import com.billy.controller.core.ConnectionService;
-import com.billy.controller.core.DebugListenerManager;
-import com.billy.controller.core.IDebugListener;
-import com.billy.controller.core.Status;
+import com.billy.controller.core.ServerConnectionService;
+import com.billy.controller.core.ServerMessageProcessorManager;
+import com.billy.controller.core.IServerMessageProcessor;
+import com.billy.controller.core.ConnectionStatus;
 import com.billy.controller.log.collector.LogActivity;
 
-import static com.billy.controller.core.Status.RUNNING;
-import static com.billy.controller.core.Status.STOPPED;
-import static com.billy.controller.core.Status.WAITING_CLIENT;
+import static com.billy.controller.core.ConnectionStatus.RUNNING;
+import static com.billy.controller.core.ConnectionStatus.STOPPED;
+import static com.billy.controller.core.ConnectionStatus.WAITING_CLIENT;
 
 /**
  * @author billy.qi
  * @since 17/5/26 12:49
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener, IDebugListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, IServerMessageProcessor {
 
     private TextView mBtnOnOff;
-    private Status status;
+    private ConnectionStatus status;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mBtnOnOff.setOnClickListener(this);
         setOnClickListeners(this, R.id.btn_log);
         status = STOPPED;
-        ConnectionService.addListener(this);
+        ServerMessageProcessorManager.addListener(this);
         processOnOff();//开启连接服务 或 初始化显示当前连接状态
     }
 
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void processOnOff() {
-        Intent intent = new Intent(this, ConnectionService.class);
+        Intent intent = new Intent(this, ServerConnectionService.class);
         if (status == RUNNING || status == WAITING_CLIENT) {
             intent.putExtra("stop", true);
         }
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     };
 
     @Override
-    public void onStatus(Status st) {
+    public void onStatus(ConnectionStatus st) {
         if (st != null) {
             status = st;
             runOnUiThread(refreshStatusButton);
@@ -99,12 +99,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public String getDebugKey() {
-        return DebugListenerManager.KEY_STATUS;
+        return ServerMessageProcessorManager.KEY_STATUS;
     }
 
     @Override
     protected void onDestroy() {
-        ConnectionService.removeListener(this);
+        ServerMessageProcessorManager.removeListener(this);
         super.onDestroy();
     }
 }

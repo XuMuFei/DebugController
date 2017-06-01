@@ -5,13 +5,12 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.billy.controller.core.JsonFormat;
+import com.billy.controller.util.JsonFormat;
 
 /**
  * @author billy.qi

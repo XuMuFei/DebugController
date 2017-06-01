@@ -14,10 +14,9 @@ import android.widget.RadioGroup;
 
 import com.billy.controller.BaseActivity;
 import com.billy.controller.R;
-import com.billy.controller.core.ConnectionService;
-import com.billy.controller.core.DebugListenerManager;
-import com.billy.controller.core.IDebugListener;
-import com.billy.controller.core.Status;
+import com.billy.controller.core.ServerMessageProcessorManager;
+import com.billy.controller.core.IServerMessageProcessor;
+import com.billy.controller.core.ConnectionStatus;
 import com.billy.controller.log.collector.fiter.LevelFilter;
 import com.billy.controller.log.collector.fiter.StringFilter;
 
@@ -27,8 +26,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class LogActivity extends BaseActivity implements IDebugListener {
-//    private final Pool<>
+public class LogActivity extends BaseActivity implements IServerMessageProcessor {
 
     private LogAdapter adapter;
     List<Integer> idList = Arrays.asList(
@@ -54,7 +52,7 @@ public class LogActivity extends BaseActivity implements IDebugListener {
         adapter.addLogFilter(stringFilter);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        ConnectionService.addListener(this);
+        ServerMessageProcessorManager.addListener(this);
         RadioGroup group = (RadioGroup) findViewById(R.id.log_level_group);
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -85,12 +83,12 @@ public class LogActivity extends BaseActivity implements IDebugListener {
 
     @Override
     protected void onDestroy() {
-        ConnectionService.removeListener(this);
+        ServerMessageProcessorManager.removeListener(this);
         super.onDestroy();
     }
 
     @Override
-    public void onStatus(Status status) {
+    public void onStatus(ConnectionStatus status) {
     }
 
     @Override
@@ -105,7 +103,7 @@ public class LogActivity extends BaseActivity implements IDebugListener {
 
     @Override
     public String getDebugKey() {
-        return DebugListenerManager.KEY_LOG;
+        return ServerMessageProcessorManager.KEY_LOG;
     }
 
     LinkedBlockingQueue<String> cache = new LinkedBlockingQueue<>();

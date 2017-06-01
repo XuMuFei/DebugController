@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author billy.qi
  * @since 17/5/25 14:56
  */
-public class ControllerService extends Service {
+public class ClientConnectionService extends Service {
     private static final String STOP_FLAG = "stop_send_msg";
     static AtomicBoolean running = new AtomicBoolean();
 
@@ -53,7 +53,6 @@ public class ControllerService extends Service {
 
     private void setRunning(boolean value) {
         running.set(value);
-        logcat("set running = " + value);
     }
 
     private class SendThread extends Thread {
@@ -81,7 +80,7 @@ public class ControllerService extends Service {
         private void send() {
             PrintWriter out = null;
             Socket socket = null;
-            MessageCache.clear();
+            ClientMessageCache.clear();
             try{
                 socket = new Socket(ip, port);
                 new ReceiveThread(socket).start();
@@ -89,7 +88,7 @@ public class ControllerService extends Service {
                         socket.getOutputStream())), true);
                 String msg;
                 DebugController.onConnectionStart();
-                while(running.get() && (msg = MessageCache.get()) != null) {
+                while(running.get() && (msg = ClientMessageCache.get()) != null) {
                     if (STOP_FLAG.equals(msg)) {
                         break;
                     }
@@ -101,11 +100,11 @@ public class ControllerService extends Service {
                 if(out != null) try {out.close();} catch(Exception e) {e.printStackTrace();}
                 if(socket != null) try {socket.close();} catch(Exception e) {e.printStackTrace();}
             }
-            MessageCache.clear();
+            ClientMessageCache.clear();
         }
     }
 
-    //用于socket的中断
+    //用于接收服务端的信息
     private class ReceiveThread extends Thread {
         Socket socket;
         BufferedReader reader;
@@ -122,8 +121,7 @@ public class ControllerService extends Service {
                 e.printStackTrace();
             } finally {
                 if (running.getAndSet(false)) {
-                    logcat("stop:" + STOP_FLAG);
-                    MessageCache.put(STOP_FLAG);//解决MessageCache.get()的阻塞
+                    ClientMessageCache.put(STOP_FLAG);//解决MessageCache.get()的阻塞
                 }
             }
         }
@@ -132,20 +130,10 @@ public class ControllerService extends Service {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String msg;
             while((msg = reader.readLine()) != null) {
-                logcat("receive from server:" + msg);
+                DebugController.onMessage(msg);
             }
         }
     }
 
-    private void logcat(final String message) {
-//        if (message != null) {
-//            handler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-    }
 
 }

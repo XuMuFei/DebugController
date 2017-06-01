@@ -4,13 +4,13 @@ package com.billy.controller.core;
  * @author billy.qi
  * @since 17/5/29 17:38
  */
-public interface IDebugListener {
+public interface IServerMessageProcessor {
 
     /**
      * 监听连接状态
      * @param status 当前的连接状态
      */
-    void onStatus(Status status);
+    void onStatus(ConnectionStatus status);
 
     /**
      * 新消息

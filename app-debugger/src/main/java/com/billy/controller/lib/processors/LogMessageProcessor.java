@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
+ * Logcat类消息处理器
  * @author billy.qi
  * @since 17/5/31 15:01
  */

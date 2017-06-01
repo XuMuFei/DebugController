@@ -11,26 +11,28 @@ import com.billy.controller.R;
 import com.billy.controller.util.PreferenceUtil;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.billy.controller.core.Status.RUNNING;
-import static com.billy.controller.core.Status.STARTING;
-import static com.billy.controller.core.Status.STOPPED;
-import static com.billy.controller.core.Status.STOPPING;
-import static com.billy.controller.core.Status.WAITING_CLIENT;
+import static com.billy.controller.core.ConnectionStatus.RUNNING;
+import static com.billy.controller.core.ConnectionStatus.STARTING;
+import static com.billy.controller.core.ConnectionStatus.STOPPED;
+import static com.billy.controller.core.ConnectionStatus.STOPPING;
+import static com.billy.controller.core.ConnectionStatus.WAITING_CLIENT;
 
 /**
  * @author billy.qi
  * @since 17/5/26 13:02
  */
-public class ConnectionService extends Service {
+public class ServerConnectionService extends Service {
 
     private static final long WAITING_CLIENT_REPEAT_TIME = 1000;//1s 重复发送广播间隔
     private static AtomicBoolean running = new AtomicBoolean();
@@ -38,13 +40,13 @@ public class ConnectionService extends Service {
     public static final String IP = "127.0.0.1";
     public static final int PORT = 9099;
     public static final int CLIENT_COUNT = 1;//只接受指定数量的客户端
-    private static final String TAG = "ConnectionService";
-    long startTime;
-    ServerSocket ss = null;
-    Socket client = null;
-    BufferedReader in = null;
-    private Status status;
-    Handler handler;
+    private static final String TAG = "ServerConnectionService";
+    private ServerSocket ss = null;
+    private Socket client = null;
+    private BufferedReader in = null;
+    private ConnectionStatus status;
+    private Handler handler;
+    private BufferedWriter out;
 
     @Nullable
     @Override
@@ -107,14 +109,6 @@ public class ConnectionService extends Service {
         }
     };
 
-    public static void addListener(IDebugListener listener) {
-        DebugListenerManager.addListener(listener);
-    }
-
-    public static void removeListener(IDebugListener listener) {
-        DebugListenerManager.removeListener(listener);
-    }
-
     private void setRunning(boolean value) {
         running.set(value);
         logcat("set running = " + value);
@@ -124,10 +118,10 @@ public class ConnectionService extends Service {
         Log.i(TAG, message);
     }
 
-    private void setStatus(Status st) {
+    private void setStatus(ConnectionStatus st) {
         status = st;
         logcat("status:" + st.toString());
-        DebugListenerManager.onStatus(st);
+        ServerMessageProcessorManager.onStatus(st);
     }
 
     private void processMessage(String msg) {
@@ -144,7 +138,7 @@ public class ConnectionService extends Service {
 
         @Override
         public void run() {
-            DebugListenerManager.onMessage(message);
+            ServerMessageProcessorManager.onMessage(message);
         }
     }
 
@@ -160,11 +154,14 @@ public class ConnectionService extends Service {
         close(in);
         close(client);
         close(ss);
+        close(out);
         in = null;
         client = null;
         ss = null;
+        out = null;
         setStatus(STOPPED);
         setRunning(false);
+        ServerMessageProcessorManager.sendMessageToBreakMessageCacheGetMethod();
     }
 
     private void close(Closeable closeable) {
@@ -213,15 +210,48 @@ public class ConnectionService extends Service {
             //创建一个ServerSocket ，监听客户端socket的连接请求
             ss = new ServerSocket(PORT, CLIENT_COUNT);
             in = null;
-            startTime = 0;
+            out = null;
             String msg;
             setStatus(WAITING_CLIENT);
             client = ss.accept();
             if (status == WAITING_CLIENT) {
                 setStatus(RUNNING);
+                out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                new SendMessageThread().start();
                 in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 while(status == RUNNING && (msg = in.readLine()) != null) {
                     processMessage(msg);
+                }
+            }
+        }
+    }
+
+    private class SendMessageThread extends Thread {
+
+        @Override
+        public void run() {
+            try{
+                sendCachedMessage();
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                ServerMessageCache.clear();
+            }
+        }
+
+        private void sendCachedMessage() {
+            String msg;
+            while (out != null && running.get()) {
+                try{
+                    while(running.get() && (msg = ServerMessageCache.get()) != null) {
+                        if (ServerMessageProcessorManager.SEPARATOR.equals(msg)) {
+                            break;
+                        }
+                        out.write(msg);
+                        out.newLine();
+                        out.flush();
+                    }
+                } catch(Exception ignored) {
                 }
             }
         }

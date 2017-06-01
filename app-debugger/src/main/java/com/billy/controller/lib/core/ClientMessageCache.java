@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author billy.qi
  * @since 17/5/25 16:43
  */
-public class MessageCache {
+public class ClientMessageCache {
 
 
     private static final LinkedBlockingQueue<String> cache = new LinkedBlockingQueue<>(1000);
@@ -17,7 +17,7 @@ public class MessageCache {
         if (content != null) {
             boolean offer = cache.offer(content);
             if (!offer) {
-                Log.w("MessageCache", "cache is too large, content skipped:" + content);
+                Log.w("ClientMessageCache", "cache is too large, content skipped:" + content);
             }
         }
     }

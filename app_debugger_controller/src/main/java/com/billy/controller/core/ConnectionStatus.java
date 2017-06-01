@@ -6,7 +6,7 @@ import com.billy.controller.R;
  * @author billy.qi
  * @since 17/5/25 11:47
  */
-public enum Status {
+public enum ConnectionStatus {
     STARTING(R.string.log_starting, R.drawable.btn_stop)
     , WAITING_CLIENT(R.string.log_status_waiting, R.drawable.btn_stop)
     , RUNNING(R.string.log_status_on, R.drawable.btn_stop)
@@ -16,7 +16,7 @@ public enum Status {
 
     public int resId;
     public int iconResId;
-    Status(int resId, int icon) {
+    ConnectionStatus(int resId, int icon) {
         this.resId = resId;
         this.iconResId = icon;
     }

@@ -17,7 +17,7 @@ import java.security.MessageDigest;
  * @author billy.qi
  * @since 17/5/25 13:15
  */
-public class ControllerReceiver extends BroadcastReceiver {
+public class ClientConnectionReceiver extends BroadcastReceiver {
 
     private static final String META_KEY_PACKAGE_NAME = "debugger_package_name";
     private static final String META_KEY_SIGN = "debugger_sign";
@@ -37,7 +37,7 @@ public class ControllerReceiver extends BroadcastReceiver {
             String ip = intent.getStringExtra("ip");
             int port = intent.getIntExtra("port", -1);
             if (!TextUtils.isEmpty(ip) && port > 0) {
-                Intent serviceIntent = new Intent(context, ControllerService.class);
+                Intent serviceIntent = new Intent(context, ClientConnectionService.class);
                 serviceIntent.putExtras(intent);
                 context.startService(serviceIntent);
             }
@@ -65,7 +65,7 @@ public class ControllerReceiver extends BroadcastReceiver {
             if (signMd5.equals(md5Str)) {
                 validSender = true;
             } else {
-                Log.e("ControllerReceiver", "app-debugger signMd5 error! app with package name '" + packageName + "' signMd5=" + md5Str);
+                Log.e("ClientConnectionReceiver", "app-debugger signMd5 error! app with package name '" + packageName + "' signMd5=" + md5Str);
             }
         } catch (Exception e) {
             e.printStackTrace();

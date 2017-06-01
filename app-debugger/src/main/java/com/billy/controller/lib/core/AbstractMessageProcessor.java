@@ -3,18 +3,20 @@ package com.billy.controller.lib.core;
 import android.text.TextUtils;
 
 /**
+ * 客户端的消息处理器基类
  * @author billy.qi
  * @since 17/5/31 14:36
  */
 public abstract class AbstractMessageProcessor {
+    public static final String MESSAGE_SEPARATOR = ":";
     private String key;
 
     protected final void sendMessage(String message) {
         if (isRunning()) {
             if (TextUtils.isEmpty(key)) {
-                key = getKey() + ":";
+                key = getKey() + MESSAGE_SEPARATOR;
             }
-            MessageCache.put(key + message);
+            ClientMessageCache.put(key + message);
         }
     }
 
@@ -36,7 +38,7 @@ public abstract class AbstractMessageProcessor {
      * @return true：已连接，false：未连接
      */
     protected boolean isRunning() {
-        return ControllerService.running.get();
+        return ClientConnectionService.running.get();
     }
 
     public abstract void onConnectionStart();

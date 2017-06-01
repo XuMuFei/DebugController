@@ -24,7 +24,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             />
         <activity android:name=".JsonViewActivity" android:label="@string/debug_json_view"/>
-        <service android:name=".core.ConnectionService" />
+        <service android:name=".core.ServerConnectionService" />
     </application>
 
 </manifest>

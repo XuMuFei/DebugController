@@ -5,12 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <receiver android:name=".core.ControllerReceiver">
+        <receiver android:name=".core.ClientConnectionReceiver">
             <intent-filter>
                 <action android:name="${applicationId}.controller.connection.start" />
             </intent-filter>
         </receiver>
-        <service android:name=".core.ControllerService" />
+        <service android:name=".core.ClientConnectionService" />
     </application>
 
 </manifest>
