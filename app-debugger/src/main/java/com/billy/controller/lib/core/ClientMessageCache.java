@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author billy.qi
  * @since 17/5/25 16:43
  */
-public class ClientMessageCache {
+class ClientMessageCache {
 
 
     private static final LinkedBlockingQueue<String> cache = new LinkedBlockingQueue<>(1000);
