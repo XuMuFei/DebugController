@@ -52,7 +52,7 @@ public class LogActivity extends BaseActivity implements IServerMessageProcessor
         adapter.addLogFilter(stringFilter);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        ServerMessageProcessorManager.addListener(this);
+        ServerMessageProcessorManager.addProcessor(this);
         RadioGroup group = (RadioGroup) findViewById(R.id.log_level_group);
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -83,7 +83,7 @@ public class LogActivity extends BaseActivity implements IServerMessageProcessor
 
     @Override
     protected void onDestroy() {
-        ServerMessageProcessorManager.removeListener(this);
+        ServerMessageProcessorManager.removeProcessor(this);
         super.onDestroy();
     }
 

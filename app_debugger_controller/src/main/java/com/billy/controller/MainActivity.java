@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mBtnOnOff.setOnClickListener(this);
         setOnClickListeners(this, R.id.btn_log);
         status = STOPPED;
-        ServerMessageProcessorManager.addListener(this);
+        ServerMessageProcessorManager.addProcessor(this);
         processOnOff();//开启连接服务 或 初始化显示当前连接状态
     }
 
@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onDestroy() {
-        ServerMessageProcessorManager.removeListener(this);
+        ServerMessageProcessorManager.removeProcessor(this);
         processOnOff(true);
         super.onDestroy();
     }

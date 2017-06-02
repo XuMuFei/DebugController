@@ -15,42 +15,42 @@ public class ServerMessageProcessorManager {
     public static final String KEY_STATUS = "status";
     public static final String KEY_LOG = "log";
 
-    private static HashMap<String, List<IServerMessageProcessor>> allListeners = new HashMap<>();
+    private static HashMap<String, List<IServerMessageProcessor>> allProcessors = new HashMap<>();
 
-    public static void addListener(IServerMessageProcessor listener) {
-        if (listener != null && listener.getDebugKey() != null) {
-            String debugKey = listener.getDebugKey();
-            List<IServerMessageProcessor> debugListeners = allListeners.get(debugKey);
-            if (debugListeners == null) {
-                debugListeners = new LinkedList<>();
-                allListeners.put(debugKey, debugListeners);
+    public static void addProcessor(IServerMessageProcessor processor) {
+        if (processor != null && processor.getDebugKey() != null) {
+            String debugKey = processor.getDebugKey();
+            List<IServerMessageProcessor> processors = allProcessors.get(debugKey);
+            if (processors == null) {
+                processors = new LinkedList<>();
+                allProcessors.put(debugKey, processors);
             }
-            if (!debugListeners.contains(listener)) {
-                debugListeners.add(listener);
+            if (!processors.contains(processor)) {
+                processors.add(processor);
             }
         }
     }
 
-    public static void removeListener(IServerMessageProcessor listener) {
-        if (listener != null && listener.getDebugKey() != null) {
-            List<IServerMessageProcessor> debugListeners = allListeners.get(listener.getDebugKey());
-            if (debugListeners != null) {
-                if (debugListeners.contains(listener)) {
-                    debugListeners.remove(listener);
+    public static void removeProcessor(IServerMessageProcessor processor) {
+        if (processor != null && processor.getDebugKey() != null) {
+            List<IServerMessageProcessor> processors = allProcessors.get(processor.getDebugKey());
+            if (processors != null) {
+                if (processors.contains(processor)) {
+                    processors.remove(processor);
                 }
             }
         }
     }
 
     public static void clear() {
-        allListeners.clear();
+        allProcessors.clear();
     }
 
     static void onStatus(ConnectionStatus status) {
-        List<IServerMessageProcessor> listeners = allListeners.get(KEY_STATUS);
-        if (listeners != null && !listeners.isEmpty()) {
-            for (IServerMessageProcessor listener : listeners) {
-                listener.onStatus(status);
+        List<IServerMessageProcessor> list = allProcessors.get(KEY_STATUS);
+        if (list != null && !list.isEmpty()) {
+            for (IServerMessageProcessor processor : list) {
+                processor.onStatus(status);
             }
         }
     }
@@ -61,19 +61,19 @@ public class ServerMessageProcessorManager {
             if (index >= 0 && message.length() > index + 1) {
                 String key = message.substring(0, index);
                 String content = message.replaceFirst(key + SEPARATOR, "");
-                List<IServerMessageProcessor> listeners = allListeners.get(key);
-                if (listeners != null && !listeners.isEmpty()) {
-                    for (IServerMessageProcessor listener : listeners) {
-                        listener.onMessage(content);
+                List<IServerMessageProcessor> list = allProcessors.get(key);
+                if (list != null && !list.isEmpty()) {
+                    for (IServerMessageProcessor processor : list) {
+                        processor.onMessage(content);
                     }
                 }
             }
         }
     }
 
-    public static void sendMessageToClient(IServerMessageProcessor listener, String message) {
-        if (listener != null && !TextUtils.isEmpty(message)) {
-            String key = listener.getDebugKey();
+    public static void sendMessageToClient(IServerMessageProcessor processor, String message) {
+        if (processor != null && !TextUtils.isEmpty(message)) {
+            String key = processor.getDebugKey();
             if (!TextUtils.isEmpty(key)) {
                 senMessageToClient(key, message);
             }

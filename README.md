@@ -10,8 +10,24 @@
      
 ##功能
 
-- 读取Logcat日志
-- 其它自定义的功能（比如：运行环境切换）
+
+1. 目前功能比较少，只有logcat日志查看功能
+	1.1 支持实时日志查看
+	1.2 支持日志级别过滤
+	1.3 支持日志关键词过滤
+	1.4 支持日志级别不同颜色显示
+	1.5 支持超长日志的单击展开/收缩
+	1.6 支持日志长按查看详情，会自动格式化json，并且支持滚动及手势缩放查看
+	1.7 支持选择多条日志进行复制/分享
+	1.8 支持清除当前日志
+	
+2. 比较容易扩展功能
+	2.1 Client通过DebugController.addProcessor(processor)方法添加AbstractMessageProcessor的子类进行消息处理
+	2.2 Client 通过AbstractMessageProcessor.sendMessage(message)来发送信息到Server
+	2.3 Server通过ServerMessageProcessorManager.addProcessor(processor)方法添加IServerMessageProcessor的实现类进行消息的处理
+	2.4 Server通过调用ServerMessageProcessorManager.sendMessageToClient(processor, message)来发送信息到Client
+
+
 
 ##目录介绍
 
