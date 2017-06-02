@@ -3,10 +3,12 @@ package com.billy.controller.util;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.text.TextUtils;
 
 import com.billy.controller.MyApp;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,5 +47,35 @@ public class PackageUtil {
             }
         }
         return null;
+    }
+
+    public static String getMd5SignByPackageName(String packageName) {
+        try{
+            PackageInfo packageInfo = MyApp.get().getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            Signature[] signatures = packageInfo.signatures;
+            Signature signature = signatures[0];
+            return md5(signature);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static String md5(Signature signature) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(
+                    signature.toByteArray());
+            StringBuilder hex = new StringBuilder(hash.length * 2);
+            for (byte b : hash) {
+                if ((b & 0xFF) < 0x10)
+                    hex.append("0");
+                hex.append(Integer.toHexString(b & 0xFF));
+            }
+            return hex.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

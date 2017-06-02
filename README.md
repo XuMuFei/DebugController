@@ -16,9 +16,10 @@
 ##目录介绍
 
 - app_debugger_controller:   与主app安装在同一台设备上的app，用来连接主app进行debug
-- app_debugger_controller.apk:    app_debugger_controller编译出来的安装包，可直接安装运行
 - app-debugger:   在主app中依赖的lib module
 - app_test:       依赖app-debugger的demo
+- app_test-demo.apk                     app_test编译出来的包，用demo.jks签名
+- app_debugger_controller-demo.apk:     app_debugger_controller编译出来的安装包，用demo.jks签名
 
 ##名词
 
@@ -38,16 +39,11 @@
 - 服务端与客户端的连接建立成功后即可进行相关debug（例如：日志查看）
 
 ##安全性校验
+服务端与客户端的签名必须一致
 
-使用app-debugger的应用默认只接收符合下列条件的服务端app进行连接
+在根目录的local.properties中可自定义签名的相关信息
 
-1. 服务端包名为com.billy.controller
-2. 服务端签名用ControllerReceiver.getMetaData(Context context, String key) 获取的值为d0de25a2855e83080290318caea6aa5f
-
-        如果需要修改服务端的签名，需要在客户端AndroidManifest.xml的<application>中创建meta-data子节点，例如：
-            <meta-data android:name="debugger_sign" android:value="xxxxxxxxxxx" />
-            xxxxxxxxxxx值可以通过与客户端连接时在客户端Log.e出来的日志获取，例如：
-            E/ControllerReceiver: app-debugger signMd5 error! app with package name 'com.billy.controller' signMd5=d0de25a2855e83080290318caea6aa5f
-        
-        
-        
+    storeFileValue=/Users/billy/Documents/xxxx/xxx.keystore
+    storePasswordValue=xxxxx
+    keyAliasValue=xxxx
+    keyPasswordValue=xxxx        

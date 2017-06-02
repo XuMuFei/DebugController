@@ -1,5 +1,25 @@
 apply plugin: 'com.android.application'
 
+//默认使用根目录中的demo.jks来签名
+def storeFileValue = "../demo.jks"
+def storePasswordValue = "123456"
+def keyAliasValue = "debugger"
+def keyPasswordValue = "123456"
+def Properties props = new Properties()
+try {
+    //从工程根目录的local.properties文件中读取签名文件
+    //请务必保证客户端与服务端的apk签名一致
+    def localFile = project.rootProject.file('local.properties')
+    if (localFile != null && localFile.exists()) {
+        props.load(localFile.newDataInputStream())
+        if (props.getProperty("storeFileValue")) storeFileValue = props.getProperty("storeFileValue")
+        if (props.getProperty("storePasswordValue")) storePasswordValue = props.getProperty("storePasswordValue")
+        if (props.getProperty("keyAliasValue")) keyAliasValue = props.getProperty("keyAliasValue")
+        if (props.getProperty("keyPasswordValue")) keyPasswordValue = props.getProperty("keyPasswordValue")
+    }
+} catch (Exception ignored) {
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -10,13 +30,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    //签名Persona
+    //签名Personal
     signingConfigs {
         debug {
-            storeFile file("../demo.jks")
-            storePassword "123456"
-            keyAlias "debugger"
-            keyPassword "123456"
+            storeFile file(storeFileValue)
+            storePassword storePasswordValue
+            keyAlias keyAliasValue
+            keyPassword keyPasswordValue
         }
     }
 

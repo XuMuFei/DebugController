@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
  */
 public class LogMessageProcessor extends AbstractMessageProcessor {
 
+    private boolean start;
+
     @Override
     public void onMessage(String message) {
 
@@ -25,7 +27,11 @@ public class LogMessageProcessor extends AbstractMessageProcessor {
 
     @Override
     public void onConnectionStart() {
-        new LogThread().start();
+        //防止服务端反复开启/关闭连接，导致日志重复发送
+        if (!start) {
+            start = true;
+            new LogThread().start();
+        }
     }
 
     @Override
@@ -66,6 +72,7 @@ public class LogMessageProcessor extends AbstractMessageProcessor {
             } catch(Exception e) {
                 e.printStackTrace();
             } finally {
+                start = false;
                 if (reader != null) {
                     try {
                         reader.close();

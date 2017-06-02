@@ -100,7 +100,7 @@ public class ServerConnectionService extends Service {
                     Intent intent = new Intent(action);
                     intent.putExtra("ip", IP);
                     intent.putExtra("port", PORT);
-                    sendBroadcast(intent);
+                    sendBroadcast(intent, "com.billy.controller.broadcast.debugger");
                     handler.postDelayed(sendConnectBroadcast, WAITING_CLIENT_REPEAT_TIME);
                 }
             } catch(Exception e) {
