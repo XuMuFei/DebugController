@@ -32,7 +32,7 @@
 
 - 在客户端工程app module的build.gradle中添加app-debugger的依赖:
     
-    `compile 'com.billy.android:app-debugger:1.3.1'`
+    `compile 'com.billy.android:app-debugger:1.3.2'`
 
 - 运行客户端
 
