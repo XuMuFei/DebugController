@@ -24,13 +24,18 @@ Android app debug工具
 * 1.7 支持选择多条日志进行复制/分享
 * 1.8 支持清除当前日志
 	
-2. 比较容易扩展功能
-
-* 2.1 Client通过DebugController.addProcessor(processor)方法添加AbstractMessageProcessor的子类进行消息处理
-* 2.2 Client 通过AbstractMessageProcessor.sendMessage(message)来发送信息到Server
-* 2.3 Server通过ServerMessageProcessorManager.addProcessor(processor)方法添加IServerMessageProcessor的实现类进行消息的处理
-* 2.4 Server通过调用ServerMessageProcessorManager.sendMessageToClient(processor, message)来发送信息到Client
-
+2. 功能比较容易扩展
+* 2.1 Client添加AbstractMessageProcessor的子类进行消息处理
+		`DebugController.addProcessor(processor)`
+		
+* 2.2 Client 发送信息到Server
+		`AbstractMessageProcessor.sendMessage(message)`
+		
+* 2.3 Server添加IServerMessageProcessor的实现类进行消息的处理
+		`ServerMessageProcessorManager.addProcessor(processor)`
+		
+* 2.4 Server发送信息到Client
+		`ServerMessageProcessorManager.sendMessageToClient(processor, message)`
 
 目录介绍
 ---
