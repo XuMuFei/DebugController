@@ -151,6 +151,9 @@ public class LogActivity extends BaseActivity implements IServerMessageProcessor
     @Override
     protected boolean onOptionsItemSelected(int itemId) {
         switch (itemId) {
+            case R.id.action_view:
+                adapter.viewSelectItems();
+                return true;
             case R.id.action_share:
                 adapter.shareSelectedItems();
                 return true;

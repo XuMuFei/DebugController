@@ -59,16 +59,19 @@ public class LogMessageProcessor extends AbstractMessageProcessor {
             try{
                 reader = new BufferedReader(new InputStreamReader(pro.getInputStream()));
                 String line;
+                sendMessage("----start logging");
                 while (isRunning()) {
                     try {
                         while (isRunning() && (line = reader.readLine()) != null) {
                             sendMessage(line);
                             Thread.yield();
                         }
+                        break;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+                sendMessage("----stop logging");
             } catch(Exception e) {
                 e.printStackTrace();
             } finally {

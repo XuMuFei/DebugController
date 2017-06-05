@@ -138,6 +138,25 @@ class LogAdapter extends Adapter {
         notifyDataSetChanged();
     }
 
+    void viewSelectItems() {
+        StringBuilder sb = new StringBuilder();
+        for (LogItem item : data) {
+            if (item.selected) {
+                sb.append(item.content)
+                        .append("\n")
+                        .append("----------------------------")
+                        .append("\n")
+                ;
+            }
+        }
+        String text = sb.toString();
+        if (TextUtils.isEmpty(text)) {
+            Toast.makeText(context, "select none", Toast.LENGTH_SHORT).show();
+        } else {
+            viewText(sb.toString());
+        }
+    }
+
     private class Holder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final CheckBox checkBox;
@@ -155,9 +174,7 @@ class LogAdapter extends Adapter {
                 @Override
                 public boolean onLongClick(View v) {
                     String text = textView.getText().toString().trim();
-                    Intent intent = new Intent(context, JsonViewActivity.class);
-                    intent.putExtra(JsonViewActivity.EXTRA_CONTENT, text);
-                    context.startActivity(intent);
+                    viewText(text);
                     return false;
                 }
             });
@@ -200,6 +217,12 @@ class LogAdapter extends Adapter {
                 textView.setMaxLines(maxLine);
             }
         }
+    }
+
+    private void viewText(String text) {
+        Intent intent = new Intent(context, JsonViewActivity.class);
+        intent.putExtra(JsonViewActivity.EXTRA_CONTENT, text);
+        context.startActivity(intent);
     }
 
     private void shareText(String text) {

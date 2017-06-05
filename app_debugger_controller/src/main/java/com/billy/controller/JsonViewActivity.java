@@ -27,8 +27,10 @@ public class JsonViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
         textView = new TextView(this);
+        textView.setPadding(10, 10, 10, 10);
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         textView.setVerticalScrollBarEnabled(true);
+        textView.setHorizontalScrollBarEnabled(true);
         textView.setHorizontallyScrolling(true);
         textView.setTextIsSelectable(true);
         setContentView(textView);
