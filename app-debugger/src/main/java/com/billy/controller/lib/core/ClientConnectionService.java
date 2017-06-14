@@ -36,7 +36,7 @@ public class ClientConnectionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (running.compareAndSet(false, true)) {
+        if (intent != null && running.compareAndSet(false, true)) {
             String ip = intent.getStringExtra("ip");
             int port = intent.getIntExtra("port", -1);
             SendThread sendThread = new SendThread(ip, port);
@@ -87,7 +87,7 @@ public class ClientConnectionService extends Service {
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                         socket.getOutputStream())), true);
                 String msg;
-                DebugController.onConnectionStart();
+                DebugController.onConnectionStart(getApplicationContext());
                 while(running.get() && (msg = ClientMessageCache.get()) != null) {
                     if (STOP_FLAG.equals(msg)) {
                         break;

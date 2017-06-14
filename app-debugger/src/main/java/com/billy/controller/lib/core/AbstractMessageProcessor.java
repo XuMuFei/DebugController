@@ -1,5 +1,6 @@
 package com.billy.controller.lib.core;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 /**
@@ -41,7 +42,7 @@ public abstract class AbstractMessageProcessor {
         return ClientConnectionService.running.get();
     }
 
-    public abstract void onConnectionStart();
+    public abstract void onConnectionStart(Context context);
 
     public abstract void onConnectionStop();
 }

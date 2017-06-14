@@ -1,8 +1,10 @@
 package com.billy.controller.lib;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.billy.controller.lib.core.AbstractMessageProcessor;
+import com.billy.controller.lib.processors.EnvSwitchProcessor;
 import com.billy.controller.lib.processors.LogMessageProcessor;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class DebugController {
 
     static {
         addProcessor(new LogMessageProcessor());//默认添加一个日志监控
+        addProcessor(new EnvSwitchProcessor());//默认添加一个日志监控
     }
 
     public static void addProcessor(AbstractMessageProcessor processor) {
@@ -38,9 +41,9 @@ public class DebugController {
         }
     }
 
-    public static void onConnectionStart() {
+    public static void onConnectionStart(Context applicationContext) {
         for (AbstractMessageProcessor processor : PROCESSORS) {
-            processor.onConnectionStart();
+            processor.onConnectionStart(applicationContext);
         }
     }
     public static void onConnectionStop() {

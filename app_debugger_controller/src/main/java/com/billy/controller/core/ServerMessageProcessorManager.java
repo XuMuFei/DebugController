@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author billy.qi
@@ -47,10 +48,13 @@ public class ServerMessageProcessorManager {
     }
 
     static void onStatus(ConnectionStatus status) {
-        List<IServerMessageProcessor> list = allProcessors.get(KEY_STATUS);
-        if (list != null && !list.isEmpty()) {
-            for (IServerMessageProcessor processor : list) {
-                processor.onStatus(status);
+        Set<String> keySet = allProcessors.keySet();
+        for (String key : keySet) {
+            List<IServerMessageProcessor> list = allProcessors.get(key);
+            if (list != null && !list.isEmpty()) {
+                for (IServerMessageProcessor processor : list) {
+                    processor.onStatus(status);
+                }
             }
         }
     }

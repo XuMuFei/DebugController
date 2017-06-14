@@ -15,6 +15,7 @@ import com.billy.controller.core.ConnectionStatus;
 import com.billy.controller.core.IServerMessageProcessor;
 import com.billy.controller.core.ServerConnectionService;
 import com.billy.controller.core.ServerMessageProcessorManager;
+import com.billy.controller.env.EnvSwitchActivity;
 import com.billy.controller.log.collector.LogActivity;
 
 import static com.billy.controller.core.ConnectionStatus.RUNNING;
@@ -42,7 +43,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         mBtnOnOff = (TextView) findViewById(R.id.btn_connection);
         mBtnOnOff.setOnClickListener(this);
-        setOnClickListeners(this, R.id.btn_log);
+        setOnClickListeners(this, R.id.btn_log, R.id.btn_env);
         status = STOPPED;
         ServerMessageProcessorManager.addProcessor(this);
         processOnOff();//开启连接服务 或 初始化显示当前连接状态
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Class<? extends Activity> toActivity = null;
         switch (v.getId()) {
             case R.id.btn_log: toActivity = LogActivity.class; break;
+            case R.id.btn_env: toActivity = EnvSwitchActivity.class; break;
             case R.id.btn_connection: processOnOff(); return;
         }
         if (toActivity != null) {

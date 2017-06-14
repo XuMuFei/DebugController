@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="@dimen/theme_margin">
 
@@ -21,20 +22,26 @@
         android:layout_marginTop="@dimen/theme_margin"
         android:background="@color/colorPrimary"
         />
-    <GridLayout
+    <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/theme_margin"
-        android:columnCount="3"
+        app:columnCount="4"
         >
-        <TextView
+
+        <TextView style="@style/main_item"
             android:id="@+id/btn_log"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/btn_log"
-            android:text="@string/log_title"
-            android:gravity="center_horizontal"
-            />
-    </GridLayout>
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1"
+            android:drawableTop="@drawable/icon_log"
+            android:text="@string/log_title" />
+
+        <TextView style="@style/main_item"
+            android:id="@+id/btn_env"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1"
+            android:drawableTop="@drawable/icon_env"
+            android:text="@string/env_title" />
+    </android.support.v7.widget.GridLayout>
 
 </LinearLayout>

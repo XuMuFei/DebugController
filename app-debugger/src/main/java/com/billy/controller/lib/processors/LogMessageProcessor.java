@@ -1,5 +1,7 @@
 package com.billy.controller.lib.processors;
 
+import android.content.Context;
+
 import com.billy.controller.lib.core.AbstractMessageProcessor;
 
 import java.io.BufferedReader;
@@ -26,7 +28,7 @@ public class LogMessageProcessor extends AbstractMessageProcessor {
     }
 
     @Override
-    public void onConnectionStart() {
+    public void onConnectionStart(Context context) {
         //防止服务端反复开启/关闭连接，导致日志重复发送
         if (!start) {
             start = true;

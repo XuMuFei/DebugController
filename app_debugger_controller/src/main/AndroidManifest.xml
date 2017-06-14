@@ -26,6 +26,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             />
         <activity android:name=".JsonViewActivity" android:label="@string/debug_json_view"/>
+        <activity android:name=".env.EnvSwitchActivity" android:label="@string/env_title"/>
         <service android:name=".core.ServerConnectionService" />
     </application>
 

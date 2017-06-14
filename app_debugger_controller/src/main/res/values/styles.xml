@@ -21,5 +21,23 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textSize">14sp</item>
     </style>
+    <style name="env_type_radio">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:background">@drawable/theme_clickable_item</item>
+
+    </style>
+
+    <style name="main_item">
+        <item name="android:layout_width">@dimen/main_item_width</item>
+        <item name="android:layout_height">@dimen/main_item_width</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
 
 </resources>
