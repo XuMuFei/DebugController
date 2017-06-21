@@ -5,7 +5,10 @@ import android.text.TextUtils;
 
 import com.billy.controller.lib.core.AbstractMessageProcessor;
 import com.billy.controller.lib.core.PreferenceUtil;
-import com.billy.controller.lib.core.PreferenceUtil.SharedPreference;
+
+import org.json.JSONObject;
+
+import java.util.Iterator;
 
 /**
  * 环境切换
@@ -17,16 +20,38 @@ public class EnvSwitchProcessor extends AbstractMessageProcessor {
 
     private static PreferenceUtil PREFERENCE = new PreferenceUtil(FILE_NAME, Context.MODE_PRIVATE);
 
-    private SharedPreference<String> env_type = PREFERENCE.value( "bl_network_env_type", "");
+    private static final String KEY_GET = "get";
+    private static final String KEY_PUT = "put";
 
     @Override
     public void onMessage(String message) {
         if (!TextUtils.isEmpty(message)) {
-            if ("get".equals(message)) {
-                sendCurEnvToServer();
-            } else {
-                env_type.put(message);
-                sendMessage(message);
+            if (message.startsWith(KEY_GET)) {
+                message = message.substring(KEY_GET.length());
+                sendCurEnvToServer(message);
+            } else if (message.startsWith(KEY_PUT)) {
+                message = message.substring(KEY_PUT.length());
+                saveEnvFromServer(message);
+            }
+        }
+    }
+
+    private void saveEnvFromServer(String message) {
+        if (!TextUtils.isEmpty(message)) {
+            try{
+                JSONObject json = new JSONObject(message);
+                Iterator<String> keys = json.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    String value = json.getString(key);
+                    if (value == null) {
+                        value = "";
+                    }
+                    PREFERENCE.value(key, "").put(value);
+                }
+                sendMessage(json.toString());
+            } catch(Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -39,13 +64,22 @@ public class EnvSwitchProcessor extends AbstractMessageProcessor {
     @Override
     public void onConnectionStart(Context context) {
         PREFERENCE.init(context);
-        sendCurEnvToServer();
     }
 
-    private void sendCurEnvToServer() {
-        String type = env_type.get();
-        if (!TextUtils.isEmpty(type)) {
-            sendMessage(type);
+    private void sendCurEnvToServer(String message) {
+        if (!TextUtils.isEmpty(message)) {
+            try{
+                JSONObject json = new JSONObject(message);
+                Iterator<String> keys = json.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    json.putOpt(key, PREFERENCE.value(key, "").get());
+                }
+                sendMessage(json.toString());
+            } catch(Exception e) {
+                e.printStackTrace();
+                sendMessage("error");
+            }
         }
     }
 

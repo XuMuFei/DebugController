@@ -139,6 +139,10 @@ public class LogActivity extends BaseActivity implements IServerMessageProcessor
                     char c = s.charAt(LOG_TYPE_INDEX - 1);
                     level = LEVEL.indexOf(c) + 1;// 0, 1, 2, 3, 4
                 }
+                if (level == 0 && s.length() > 0) {//有些设备上获取的日志会将Log等级之前的信息去除
+                    char c = s.charAt(0);
+                    level = LEVEL.indexOf(c) + 1;// 0, 1, 2, 3, 4
+                }
             }
         }
     }

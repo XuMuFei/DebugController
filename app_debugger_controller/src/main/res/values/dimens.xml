@@ -4,6 +4,6 @@
     <dimen name="log_item_height">30dp</dimen>
     <dimen name="log_filter_hint_size">12sp</dimen>
     <dimen name="main_item_width">100dp</dimen>
-    <dimen name="env_status_text_size">50sp</dimen>
-    <dimen name="env_status_lbl_text_size">32sp</dimen>
+    <dimen name="env_status_text_size">24sp</dimen>
+    <dimen name="env_status_lbl_text_size">20sp</dimen>
 </resources>

@@ -21,10 +21,12 @@
     <string name="connection_error_app_not_exist">该应用未安装或已被卸载</string>
     <string name="log_view">查看</string>
     <string name="env_title">环境切换</string>
-    <string name="env_type_sit">SIT环境</string>
-    <string name="env_type_release">release环境</string>
-    <string name="env_type_pre">PRE环境</string>
+    <string name="env_type_sit">Sit</string>
+    <string name="env_type_release">Release</string>
+    <string name="env_type_pre">Pre</string>
     <string name="env_status_current_lbl">当前环境</string>
     <string name="env_unkunow_type">不能识别的环境配置：%s</string>
     <string name="env_invalid_type">无效的环境配置</string>
+    <string name="statistics_on">埋点日志已开启</string>
+    <string name="statistics_off">埋点日志已关闭</string>
 </resources>
