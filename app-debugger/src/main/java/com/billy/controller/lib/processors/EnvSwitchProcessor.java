@@ -8,6 +8,7 @@ import com.billy.controller.lib.core.PreferenceUtil;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 /**
@@ -48,11 +49,24 @@ public class EnvSwitchProcessor extends AbstractMessageProcessor {
                         value = "";
                     }
                     PREFERENCE.value(key, "").put(value);
+                    if ("bl_network_env_type".equals(key)) {
+                        clearNetworkCache();
+                    }
                 }
                 sendMessage(json.toString());
             } catch(Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void clearNetworkCache() {
+        try{
+            Class<?> clazz = Class.forName("cn.com.bailian.plugin.utils.BhCacheUtils");
+            Method method = clazz.getDeclaredMethod("clearCache");
+            method.invoke(null);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
