@@ -29,4 +29,6 @@
     <string name="env_invalid_type">无效的环境配置</string>
     <string name="statistics_on">埋点日志已开启</string>
     <string name="statistics_off">埋点日志已关闭</string>
+    <string name="info_title">信息框</string>
+    <string name="turn_on_accessibility">开启辅助功能,用于检测topActivity等功能</string>
 </resources>

@@ -6,6 +6,7 @@
 
     <!-- 声明使用指定的权限 -->
     <uses-permission android:name="com.billy.controller.broadcast.debugger" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -28,6 +29,16 @@
         <activity android:name=".JsonViewActivity" android:label="@string/debug_json_view"/>
         <activity android:name=".env.EnvSwitchActivity" android:label="@string/env_title"/>
         <service android:name=".core.ServerConnectionService" />
+        <service
+            android:name=".info.DetectionService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/detection_service_config"/>
+        </service>
     </application>
 
 </manifest>

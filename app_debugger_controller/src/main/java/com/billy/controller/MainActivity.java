@@ -16,6 +16,7 @@ import com.billy.controller.core.IServerMessageProcessor;
 import com.billy.controller.core.ServerConnectionService;
 import com.billy.controller.core.ServerMessageProcessorManager;
 import com.billy.controller.env.EnvSwitchActivity;
+import com.billy.controller.info.InfoPanel;
 import com.billy.controller.log.collector.LogActivity;
 
 import static com.billy.controller.core.ConnectionStatus.RUNNING;
@@ -30,6 +31,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private TextView mBtnOnOff;
     private ConnectionStatus status;
+    private InfoPanel infoPanel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         mBtnOnOff = (TextView) findViewById(R.id.btn_connection);
         mBtnOnOff.setOnClickListener(this);
-        setOnClickListeners(this, R.id.btn_log, R.id.btn_env);
+        setOnClickListeners(this, R.id.btn_log, R.id.btn_env, R.id.btn_info);
         status = STOPPED;
         ServerMessageProcessorManager.addProcessor(this);
         processOnOff();//开启连接服务 或 初始化显示当前连接状态
@@ -67,10 +69,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.btn_log: toActivity = LogActivity.class; break;
             case R.id.btn_env: toActivity = EnvSwitchActivity.class; break;
             case R.id.btn_connection: processOnOff(); return;
+            case R.id.btn_info: toggleShowInfo(); return;
         }
         if (toActivity != null) {
             startActivity(new Intent(this, toActivity));
         }
+    }
+
+    private void toggleShowInfo() {
+        if (infoPanel == null) {
+            infoPanel = new InfoPanel(getApplication());
+        }
+        infoPanel.toggleShow(this);
     }
 
     private void processOnOff() {
@@ -119,6 +129,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onDestroy() {
         ServerMessageProcessorManager.removeProcessor(this);
         processOnOff(true);
+        if (infoPanel != null) {
+            infoPanel.destroy();
+        }
         super.onDestroy();
     }
 }
